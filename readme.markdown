@@ -5,7 +5,8 @@ streaming JSON.parse and stringify
 ## example
 
 in node v0.4.x
-```js
+
+```javascript
 
 var request = require('request')
   , JSONStream = require('JSONStream')
@@ -13,10 +14,13 @@ var request = require('request')
 
 var parser = JSONStream.parse(['rows', /./]) //emit parts that match this path (any element of the rows array)
   , req = request({url: 'http://isaacs.couchone.com/registry/_all_docs'})
+  
 ```
+
 in node 0.4.x
 
-``` js
+
+```javascript
 
 req.pipe(parser)
 parser.pipe(es.log(''))
@@ -25,7 +29,8 @@ parser.pipe(es.log(''))
 
 in node v0.5.x
 
-```js
+
+```javascript
 req.pipe(parser).pipe(es.log(''))
 
 ```
