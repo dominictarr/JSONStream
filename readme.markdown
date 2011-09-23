@@ -73,13 +73,28 @@ create a `Stream` that parses the documents from the feed like this:
 
 ``` js
 JSONStream.parse(['rows', /./, 'doc']) //rows, ANYTHING, doc
-```
- 
+``` 
 awesome!
 
-## todo
+## JSONStream.stringify(open='[\n', sep='\n,\n', cl='\n]\n')
 
-  * JSONStream.stringify()
+Create a writable stream.
+By default, `JSONStream.stringify()` will create an array,  
+but you may pass in custom `open`, `close`, and `seperator` strings.  
+
+If you call `JSONStream.stringify(false)` the elements will only be seperated by a newline.  
+
+This will still be valid json if you only write one item.  
+and will still be easy to split with a RegExp in a  
+different enviroment where a streaming parser is not available.
+
+## numbers
+
+There seem to be occasional problems parsing and unparsing precise numbers.  
+
+I have opened an issue here:
+
+https://github.com/creationix/jsonparse/issues/2
 
 ## Acknowlegements
 

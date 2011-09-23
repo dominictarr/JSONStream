@@ -8,8 +8,6 @@ var Parser = require('jsonparse')
   
   it makes this code ugly, but his problem is way harder that mine,
   so i'll forgive him.
-  
-  
 
 */
 
@@ -67,6 +65,8 @@ exports.parse = function (path) {
   stream.readable = true
   stream.writable = true
   stream.write = function (chunk) {
+    if('string' === typeof chunk)
+      chunk = new Buffer(chunk)
     parser.write(chunk)
   }
   stream.end = function (data) {
@@ -76,5 +76,45 @@ exports.parse = function (path) {
       stream.emit('data', stream.root)
     stream.emit('end')
   }
+  return stream
+}
+
+exports.stringify = function (op, sep, cl) {
+  if (op === false){
+    op = ''
+    sep = '\n'
+    cl = ''
+  } else if (op == null) {
+  
+    op = '[\n'
+    sep = '\n,\n'
+    cl = '\n]\n'
+  
+  }
+
+  //else, what eve you like
+  
+  var stream = new Stream ()
+    , first = true
+    , ended = false
+  stream.write = function (data) {
+    var json = JSON.stringify(data)
+    if(first) { first = false ; stream.emit('data', op + json)}
+    else stream.emit('data', sep + json)
+  }
+  stream.end = function (data) {
+    console.error('END ****************',JSON.stringify(cl))
+    if(ended)
+      return
+    ended = true
+//    if(data)
+  //    stream.write(data)
+    stream.emit('data', cl)
+    
+    stream.emit('end')
+  }
+  stream.writable = true
+  stream.readable = true
+
   return stream
 }
