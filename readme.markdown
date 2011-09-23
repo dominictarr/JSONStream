@@ -4,34 +4,33 @@ streaming JSON.parse and stringify
 
 ## example
 
-in node v0.4.x
-
 ```javascript
 
 var request = require('request')
   , JSONStream = require('JSONStream')
   , es = require('event-stream')
 
-var parser = JSONStream.parse(['rows', /./]) //emit parts that match this path (any element of the rows array)
+var parser = JSONStream.parse(['rows', /./])
   , req = request({url: 'http://isaacs.couchone.com/registry/_all_docs'})
-  
+  , logger = es.mapSync(function (data) {
+      console.error(data)
+      return data
+    })
 ```
 
 in node 0.4.x
 
-
-```javascript
+``` javascript
 
 req.pipe(parser)
-parser.pipe(es.log(''))
+parser.pipe(logger)
 
 ```
 
 in node v0.5.x
 
-
-```javascript
-req.pipe(parser).pipe(es.log(''))
+``` javascript
+req.pipe(parser).pipe(logger)
 
 ```
 
@@ -43,9 +42,9 @@ usally, a json API will return a list of objects.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
 if `path` is empty or null, or if no matches are made:  
-JSONStream.parse will only emit 'data' once, emitting the root object.
+JSONStream.parse will only one 'data': the root object.
 
-(this is useful when there is an error, because the error will probobly not match your path)
+(this is useful when there is an error, because the error will probably not match your path)
 
 ### example
 
@@ -90,24 +89,28 @@ awesome!
 ## JSONStream.stringify(open, sep, close)
 
 Create a writable stream.
-By default, `JSONStream.stringify()` will create an array,  
-with default options `open='[\n', sep='\n,\n', cl='\n]\n'`
-but you may pass in custom `open`, `close`, and `seperator` strings.  
 
-If you call `JSONStream.stringify(false)` the elements will only be seperated by a newline.  
+you may pass in custom `open`, `close`, and `seperator` strings.  
+But, by default, `JSONStream.stringify()` will create an array,  
+(with default options `open='[\n', sep='\n,\n', cl='\n]\n'`)
 
-This will still be valid json if you only write one item.  
-and will still be easy to split with a RegExp in a  
-different enviroment where a streaming parser is not available.
+If you call `JSONStream.stringify(false)`   
+the elements will only be seperated by a newline.  
+
+If you only write one item this will be valid JSON.  
+
+If you write many items,  
+you can use a `RegExp` to split it into valid chunks.
 
 ## numbers
 
-There seem to be occasional problems parsing and unparsing precise numbers.  
+There are occasional problems parsing and unparsing very precise numbers.  
 
 I have opened an issue here:
 
 https://github.com/creationix/jsonparse/issues/2
 
++1
 
 ## Acknowlegements
 
