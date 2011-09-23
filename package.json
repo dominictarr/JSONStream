@@ -5,7 +5,9 @@
 , "repository": 
   { "type": "git"
   , "url": "https://github.com/dominictarr/JSONStream.git" }
-, "dependencies": {}
+, "dependencies": {
+    "jsonparse": "0.0.1"
+  }
 , "devDependencies": {}
 , "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)"
 , "scripts": { "test": "meta-test test/*.js" } }
