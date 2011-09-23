@@ -1,0 +1,11 @@
+{ "name": "JSONStream"
+, "version": "0.0.0"
+, "description": "rawStream.pipe(JSONStream.parse()).pipe(streamOfObjects)"
+, "homepage": "http://github.com/dominictarr/JSONStream"
+, "repository": 
+  { "type": "git"
+  , "url": "https://github.com/dominictarr/JSONStream.git" }
+, "dependencies": {}
+, "devDependencies": {}
+, "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)"
+, "scripts": { "test": "meta-test test/*.js" } }
