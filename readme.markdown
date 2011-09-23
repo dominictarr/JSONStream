@@ -39,18 +39,22 @@ req.pipe(parser).pipe(es.log(''))
 
 usally, a json API will return a list of objects.  
 
-`path` should be an array of property names and/or `RedExp`s.
-any object that matches the path will be emitted as 'data' (and `pipe()`d down stream)
+`path` should be an array of property names and/or `RedExp`s.  
+any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
-if `path` is empty or null, or if no matches are made:
+if `path` is empty or null, or if no matches are made:  
 JSONStream.parse will only emit 'data' once, emitting the root object.
 
-for example, couchdb returns views like this:
+(this is useful when there is an error, because the error will probobly not match your path)
+
+### example
+
+query a couchdb view:
 
 ``` bash
-curl -sS localhost:5984/tests/_all_docs
+curl -sS localhost:5984/tests/_all_docs&include_docs=true
 ```
-returns this:
+you will get something like this:
 
 ``` js
 {"total_rows":129,"offset":0,"rows":[
@@ -61,13 +65,20 @@ returns this:
       "_id":  "change1_0.6995461115147918"
     , "_rev": "1-e240bae28c7bb3667f02760f6398d508","hello":1}
   },
-{"id":"change2_0.6995461115147918","key":"change2_0.6995461115147918","value":{"rev":"1-13677d36b98c0c075145bb8975105153"},"doc":{"_id":"change2_0.6995461115147918","_rev":"1-13677d36b98c0c075145bb8975105153","hello":2}},
-...
+  { "id":"change2_0.6995461115147918"
+  , "key":"change2_0.6995461115147918"
+  , "value":{"rev":"1-13677d36b98c0c075145bb8975105153"}
+  , "doc":{
+      "_id":"change2_0.6995461115147918"
+    , "_rev":"1-13677d36b98c0c075145bb8975105153"
+    , "hello":2
+    }
+  },
 ]}
 
 ```
 
-we are probably interested in the `rows.*.docs`  
+we are probably most interested in the `rows.*.docs`  
 
 create a `Stream` that parses the documents from the feed like this:
 
@@ -76,10 +87,11 @@ JSONStream.parse(['rows', /./, 'doc']) //rows, ANYTHING, doc
 ``` 
 awesome!
 
-## JSONStream.stringify(open='[\n', sep='\n,\n', cl='\n]\n')
+## JSONStream.stringify(open, sep, close)
 
 Create a writable stream.
 By default, `JSONStream.stringify()` will create an array,  
+with default options `open='[\n', sep='\n,\n', cl='\n]\n'`
 but you may pass in custom `open`, `close`, and `seperator` strings.  
 
 If you call `JSONStream.stringify(false)` the elements will only be seperated by a newline.  
@@ -96,9 +108,10 @@ I have opened an issue here:
 
 https://github.com/creationix/jsonparse/issues/2
 
+
 ## Acknowlegements
 
-  this module depends on https://github.com/creationix/jsonparse  
-  by Tim Caswell  
-  and also thanks to Florent Jaby for teaching me about parsing with:
-  https://github.com/Floby/node-json-streams
+this module depends on https://github.com/creationix/jsonparse  
+by Tim Caswell  
+and also thanks to Florent Jaby for teaching me about parsing with:
+https://github.com/Floby/node-json-streams
