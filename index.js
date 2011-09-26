@@ -30,7 +30,6 @@ exports.parse = function (path) {
       var c = this.stack[1 + (+i)]
       
       if(!c) {
-        console.log(c, this.stack.length)
         return
       }
       var m = 
@@ -103,7 +102,6 @@ exports.stringify = function (op, sep, cl) {
     else stream.emit('data', sep + json)
   }
   stream.end = function (data) {
-    console.error('END ****************',JSON.stringify(cl))
     if(ended)
       return
     ended = true
