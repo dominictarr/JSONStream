@@ -91,7 +91,7 @@ exports.stringify = function (op, sep, cl) {
   
   }
 
-  //else, what eve you like
+  //else, what ever you like
   
   var stream = new Stream ()
     , first = true
@@ -105,8 +105,8 @@ exports.stringify = function (op, sep, cl) {
     if(ended)
       return
     ended = true
-//    if(data)
-  //    stream.write(data)
+    if(data)
+      stream.write(data)
     stream.emit('data', cl)
     
     stream.emit('end')
