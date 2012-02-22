@@ -96,17 +96,19 @@ exports.stringify = function (op, sep, cl) {
   var stream = new Stream ()
     , first = true
     , ended = false
+    , anyData = false
   stream.write = function (data) {
     var json = JSON.stringify(data)
     if(first) { first = false ; stream.emit('data', op + json)}
     else stream.emit('data', sep + json)
+    anyData = true
   }
   stream.end = function (data) {
     if(ended)
       return
     ended = true
-    if(data)
-      stream.write(data)
+    if(data) stream.write(data)
+    if(!anyData) stream.write(op)
     stream.emit('data', cl)
     
     stream.emit('end')
