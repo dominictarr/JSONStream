@@ -98,10 +98,10 @@ exports.stringify = function (op, sep, cl) {
     , ended = false
     , anyData = false
   stream.write = function (data) {
+    anyData = true
     var json = JSON.stringify(data)
     if(first) { first = false ; stream.emit('data', op + json)}
     else stream.emit('data', sep + json)
-    anyData = true
   }
   stream.end = function (data) {
     if(ended)
@@ -139,10 +139,10 @@ exports.stringifyObject = function (op, sep, cl) {
     , ended = false
     , anyData = false
   stream.write = function (data) {
+    anyData = true
     var json = JSON.stringify(data[0]) + ':' + JSON.stringify(data[1])
     if(first) { first = false ; stream.emit('data', op + json)}
     else stream.emit('data', sep + json)
-    anyData = true
   }
   stream.end = function (data) {
     if(ended) return
