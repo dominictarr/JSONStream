@@ -116,3 +116,42 @@ exports.stringify = function (op, sep, cl) {
 
   return stream
 }
+
+exports.stringifyObject = function (op, sep, cl) {
+  if (op === false){
+    op = ''
+    sep = '\n'
+    cl = ''
+  } else if (op == null) {
+  
+    op = '{\n'
+    sep = '\n,\n'
+    cl = '\n}\n'
+  
+  }
+
+  //else, what ever you like
+  
+  var stream = new Stream ()
+    , first = true
+    , ended = false
+  stream.write = function (key, data) {
+    var json = JSON.stringify(key) + ':' + JSON.stringify(data)
+    if(first) { first = false ; stream.emit('data', op + json)}
+    else stream.emit('data', sep + json)
+  }
+  stream.end = function (key, data) {
+    if(ended)
+      return
+    ended = true
+    if(key !== undefined)
+      stream.write(key, data)
+    stream.emit('data', cl)
+    
+    stream.emit('end')
+  }
+  stream.writable = true
+  stream.readable = true
+
+  return stream
+}
