@@ -108,7 +108,7 @@ exports.stringify = function (op, sep, cl) {
       return
     ended = true
     if(data) stream.write(data)
-    if(!anyData) stream.write(op)
+    if(!anyData) stream.emit('data', op)
     stream.emit('data', cl)
     
     stream.emit('end')
