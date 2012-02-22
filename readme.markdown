@@ -92,7 +92,7 @@ Create a writable stream.
 
 you may pass in custom `open`, `close`, and `seperator` strings.  
 But, by default, `JSONStream.stringify()` will create an array,  
-(with default options `open='[\n', sep='\n,\n', cl='\n]\n'`)
+(with default options `open='[\n', sep='\n,\n', close='\n]\n'`)
 
 If you call `JSONStream.stringify(false)`   
 the elements will only be seperated by a newline.  
@@ -101,6 +101,16 @@ If you only write one item this will be valid JSON.
 
 If you write many items,  
 you can use a `RegExp` to split it into valid chunks.
+
+## JSONStream.stringifyObject(open, sep, close)
+
+Very much like `JSONStream.stringify`,
+but creates a writable stream for objects instead of arrays.
+
+Accordingly, `open='{\n', sep='\n,\n', close='\n}\n'`.
+
+When you `.write()` to the stream you must supply an array with `[ key, data ]`
+as the first argument.
 
 ## numbers
 
