@@ -4,6 +4,9 @@ var fs = require ('fs')
   , file = join(__dirname, 'fixtures','all_npm.json')
   , JSONStream = require('../')
   , it = require('it-is').style('colour')
+  , es = require('event-stream')
+  , pending = 10
+  , passed = true
 
   function randomObj () {
     return (
@@ -18,26 +21,26 @@ var fs = require ('fs')
     )
   }
 
-var expected =  {}
-  , stringify = JSONStream.stringifyObject()
-  , es = require('event-stream')
-  , stringified = ''
-  , called = 0
-  , count = 10
-  , ended = false
-  
-es.connect(
-  stringify,
-  es.writeArray(function (err, lines) {
-    it(JSON.parse(lines.join(''))).deepEqual(expected)
-    console.error('PASSED')
-  })
-)
+for (var ix = 0; ix < pending; ix++) (function (count) {
+  var expected =  {}
+    , stringify = JSONStream.stringifyObject()
+    
+  es.connect(
+    stringify,
+    es.writeArray(function (err, lines) {
+      it(JSON.parse(lines.join(''))).deepEqual(expected)
+console.log(pending);
+      if (--pending === 0) {
+        console.error('PASSED')
+      }
+    })
+  )
 
-while (count --) {
-  var key = Math.random().toString(16).slice(2)
-  expected[key] = randomObj()
-  stringify.write([ key, expected[key] ])
-}
+  while (count --) {
+    var key = Math.random().toString(16).slice(2)
+    expected[key] = randomObj()
+    stringify.write([ key, expected[key] ])
+  }
 
-stringify.end()
+  stringify.end()
+})(ix)
