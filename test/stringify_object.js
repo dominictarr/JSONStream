@@ -37,7 +37,7 @@ es.connect(
 while (count --) {
   var key = Math.random().toString(16).slice(2)
   expected[key] = randomObj()
-  stringify.write(key, expected[key])
+  stringify.write([ key, expected[key] ])
 }
 
 stringify.end()
