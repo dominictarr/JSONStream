@@ -26,17 +26,18 @@ var expected =  {}
   , count = 10
   , ended = false
   
-while (count --)
+es.connect(
+  stringify,
+  es.writeArray(function (err, lines) {
+    it(JSON.parse(lines.join(''))).deepEqual(expected)
+    console.error('PASSED')
+  })
+)
+
+while (count --) {
   var key = Math.random().toString(16).slice(2)
   expected[key] = randomObj()
-  stringify.write(key, randomObj)
+  stringify.write(key, expected[key])
+}
 
-  es.connect(
-    stringify,
-    //JSONStream.parse([/./]),
-    es.writeArray(function (err, lines) {
-      
-      it(JSON.parse(lines.join(''))).deepEqual(expected)
-      console.error('PASSED')
-    })
-  )
+stringify.end()
