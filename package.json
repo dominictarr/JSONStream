@@ -8,6 +8,12 @@
 , "dependencies": {
     "jsonparse": "0.0.1"
   }
-, "devDependencies": {}
+, "devDependencies":
+  { "it-is": "~1.0.1"
+  , "assertions": "~2.2.2"
+  , "render": "~0.1.1"
+  , "trees": "~0.0.3"
+  , "event-stream": "~0.7.0" }
 , "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)"
-, "scripts": { "test": "meta-test test/*.js" } }
+, "scripts":
+  { "test": "for t in test/*.js; do echo *** $t ***; node $t; done" } }
