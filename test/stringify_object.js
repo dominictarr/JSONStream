@@ -29,7 +29,6 @@ for (var ix = 0; ix < pending; ix++) (function (count) {
     stringify,
     es.writeArray(function (err, lines) {
       it(JSON.parse(lines.join(''))).deepEqual(expected)
-console.log(pending);
       if (--pending === 0) {
         console.error('PASSED')
       }
@@ -42,5 +41,7 @@ console.log(pending);
     stringify.write([ key, expected[key] ])
   }
 
-  stringify.end()
+  process.nextTick(function () {
+    stringify.end()
+  })
 })(ix)
