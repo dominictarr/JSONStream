@@ -17,9 +17,9 @@ fs.createReadStream(file).pipe(parser)
 parser.on('data', function (data) {
   called ++
   it.has({
-    id: it.isString(),
-    value: {rev: it.isString()},
-    key:it.isString()
+    id: it.typeof('string'),
+    value: {rev: it.typeof('string')},
+    key:it.typeof('string')
   })
   parsed.push(data)
 })
