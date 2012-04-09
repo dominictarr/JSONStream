@@ -64,8 +64,15 @@ exports.parse = function (path) {
   stream.readable = true
   stream.writable = true
   stream.write = function (chunk) {
-    if('string' === typeof chunk)
-      chunk = new Buffer(chunk)
+    if('string' === typeof chunk) {
+      if ('undefined' === typeof Buffer) {
+        var buf = new Array(chunk.length)
+        for (var i = 0; i < chunk.length; i++) buf[i] = chunk.charCodeAt(i)
+        chunk = new Int32Array(buf)
+      } else {
+        chunk = new Buffer(chunk)
+      }
+    }
     parser.write(chunk)
   }
   stream.end = function (data) {
