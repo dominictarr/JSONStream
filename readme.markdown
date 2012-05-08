@@ -128,3 +128,7 @@ this module depends on https://github.com/creationix/jsonparse
 by Tim Caswell  
 and also thanks to Florent Jaby for teaching me about parsing with:
 https://github.com/Floby/node-json-streams
+
+## license
+
+MIT / APACHE2
