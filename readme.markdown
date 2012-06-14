@@ -38,7 +38,7 @@ req.pipe(parser).pipe(logger)
 
 usally, a json API will return a list of objects.  
 
-`path` should be an array of property names and/or `RedExp`s.  
+`path` should be an array of property names, `RegExp`s, booleans, and/or functions.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
 if `path` is empty or null, or if no matches are made:  
