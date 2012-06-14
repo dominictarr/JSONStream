@@ -1,19 +1,28 @@
-{ "name": "JSONStream"
-, "version": "0.2.3"
-, "description": "rawStream.pipe(JSONStream.parse()).pipe(streamOfObjects)"
-, "homepage": "http://github.com/dominictarr/JSONStream"
-, "repository": 
-  { "type": "git"
-  , "url": "https://github.com/dominictarr/JSONStream.git" }
-, "dependencies": {
+{
+  "name": "JSONStream",
+  "version": "0.3.0",
+  "description": "rawStream.pipe(JSONStream.parse()).pipe(streamOfObjects)",
+  "homepage": "http://github.com/dominictarr/JSONStream",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/JSONStream.git"
+  },
+  "dependencies": {
     "jsonparse": "0.0.1"
+  },
+  "devDependencies": {
+    "it-is": "~1",
+    "assertions": "~2.2.2",
+    "render": "~0.1.1",
+    "trees": "~0.0.3",
+    "event-stream": "~0.7.0"
+  },
+  "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
+  "scripts": {
+    "test": "for t in test/*.js; do echo *** $t ***; node $t; done"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
   }
-, "devDependencies":
-  { "it-is": "~1"
-  , "assertions": "~2.2.2"
-  , "render": "~0.1.1"
-  , "trees": "~0.0.3"
-  , "event-stream": "~0.7.0" }
-, "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)"
-, "scripts":
-  { "test": "for t in test/*.js; do echo *** $t ***; node $t; done" } }
+}
