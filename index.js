@@ -86,6 +86,9 @@ function check (x, y) {
     return x.exec(y)
   else if ('boolean' === typeof x)
     return x
+  else if ('function' === typeof x)
+    return x(y)
+  return false
 }
 
 exports.stringify = function (op, sep, cl) {
