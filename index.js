@@ -32,10 +32,7 @@ exports.parse = function (path) {
       if(!c) {
         return
       }
-      var m = 
-       ( 'string' === typeof key 
-          ? c.key == key
-          : key.exec(c.key)) 
+      var m = check(key, c.key)
       _path.push(c.key)
         
        if(!m)
@@ -45,10 +42,7 @@ exports.parse = function (path) {
     var c = this
  
     var key = path[path.length - 1]
-      var m = 
-       ( 'string' === typeof key 
-          ? c.key == key
-          : key.exec(c.key)) 
+      var m = check(key, c.key)
      if(!m)
       return
       _path.push(c.key)
@@ -83,6 +77,15 @@ exports.parse = function (path) {
     stream.emit('end')
   }
   return stream
+}
+
+function check (x, y) {
+  if ('string' === typeof x)
+    return y == x
+  else if (x && 'function' === typeof x.exec)
+    return x.exec(y)
+  else if ('boolean' === typeof x)
+    return x
 }
 
 exports.stringify = function (op, sep, cl) {
