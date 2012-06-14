@@ -2,6 +2,8 @@
 
 streaming JSON.parse and stringify
 
+<img src=https://secure.travis-ci.org/dominictarr/JSONStream.png?branch=master>
+
 ## example
 
 ```javascript
