@@ -10,7 +10,7 @@ var request = require('request')
   , JSONStream = require('JSONStream')
   , es = require('event-stream')
 
-var parser = JSONStream.parse(['rows', /./])
+var parser = JSONStream.parse(['rows', true])
   , req = request({url: 'http://isaacs.couchone.com/registry/_all_docs'})
   , logger = es.mapSync(function (data) {
       console.error(data)
@@ -82,7 +82,7 @@ we are probably most interested in the `rows.*.docs`
 create a `Stream` that parses the documents from the feed like this:
 
 ``` js
-JSONStream.parse(['rows', /./, 'doc']) //rows, ANYTHING, doc
+JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
 ``` 
 awesome!
 
