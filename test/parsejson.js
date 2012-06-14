@@ -15,7 +15,10 @@ while (times --) {
 
   p.onValue = function (v) {
     console.error('parsed', v)
-    assert.equal(v, r)
+    assert.equal(
+      String(v).slice(0,12),
+      String(r).slice(0,12)
+    )
   }
   console.error('correct', r)
   p.write (new Buffer(JSON.stringify([r])))
