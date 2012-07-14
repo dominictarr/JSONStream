@@ -1,4 +1,3 @@
-
 var Parser = require('jsonparse')
   , Stream = require('stream').Stream
 
@@ -74,6 +73,8 @@ exports.parse = function (path) {
       stream.write(data)
     if(!count && !path)
       stream.emit('data', stream.root)
+    else if(!count)
+      stream.emit('root', stream.root)
     stream.emit('end')
   }
   return stream
