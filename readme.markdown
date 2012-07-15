@@ -43,9 +43,9 @@ usally, a json API will return a list of objects.
 `path` should be an array of property names, `RegExp`s, booleans, and/or functions.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
-if `path` is empty or null, JSONStream.parse will only one 'data': the root object.
+a 'root' event is emitted when all data has been received. The 'root' event passes the root object & the count of matched objects.
 
-if `path` was supplied, but there where no matches for some reason, the 'root' event will be emitted with the root object. This is for cases where an external API like CouchDB returns an error or differently formatted result instead of the expected result.
+if `path` is empty or null, no 'data' events are emitted.
 
 ### example
 
@@ -83,7 +83,17 @@ we are probably most interested in the `rows.*.docs`
 create a `Stream` that parses the documents from the feed like this:
 
 ``` js
-JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
+var stream = JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
+
+stream.on('data', function(data) {
+  console.log('received:', data);
+});
+
+stream.on('root', function(root, count) {
+  if (!count) {
+    console.log('no matches found:', root);
+  }
+});
 ```
 awesome!
 

@@ -4,14 +4,14 @@ var Parser = require('jsonparse')
 /*
 
   the value of this.stack that creationix's jsonparse has is weird.
-  
+
   it makes this code ugly, but his problem is way harder that mine,
   so i'll forgive him.
 
 */
 
 exports.parse = function (path) {
-  
+
   var stream = new Stream()
   var parser = new Parser()
   var count = 0
@@ -27,19 +27,19 @@ exports.parse = function (path) {
     for( var i = 0; i < (path.length - 1); i++) {
       var key = path[i]
       var c = this.stack[1 + (+i)]
-      
+
       if(!c) {
         return
       }
       var m = check(key, c.key)
       _path.push(c.key)
-        
+
        if(!m)
         return
-      
+
     }
     var c = this
- 
+
     var key = path[path.length - 1]
       var m = check(key, c.key)
      if(!m)
@@ -71,10 +71,7 @@ exports.parse = function (path) {
   stream.end = function (data) {
     if(data)
       stream.write(data)
-    if(!count && !path)
-      stream.emit('data', stream.root)
-    else if(!count)
-      stream.emit('root', stream.root)
+    stream.emit('root', stream.root, count)
     stream.emit('end')
   }
   return stream
@@ -98,15 +95,15 @@ exports.stringify = function (op, sep, cl) {
     sep = '\n'
     cl = ''
   } else if (op == null) {
-  
+
     op = '[\n'
     sep = '\n,\n'
     cl = '\n]\n'
-  
+
   }
 
   //else, what ever you like
-  
+
   var stream = new Stream ()
     , first = true
     , ended = false
@@ -124,7 +121,7 @@ exports.stringify = function (op, sep, cl) {
     if(data) stream.write(data)
     if(!anyData) stream.emit('data', op)
     stream.emit('data', cl)
-    
+
     stream.emit('end')
   }
   stream.writable = true
@@ -139,15 +136,15 @@ exports.stringifyObject = function (op, sep, cl) {
     sep = '\n'
     cl = ''
   } else if (op == null) {
-  
+
     op = '{\n'
     sep = '\n,\n'
     cl = '\n}\n'
-  
+
   }
 
   //else, what ever you like
-  
+
   var stream = new Stream ()
     , first = true
     , ended = false
@@ -164,7 +161,7 @@ exports.stringifyObject = function (op, sep, cl) {
     if(data) stream.write(data)
     if(!anyData) stream.emit('data', op)
     stream.emit('data', cl)
-    
+
     stream.emit('end')
   }
   stream.writable = true
