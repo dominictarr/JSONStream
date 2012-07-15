@@ -43,8 +43,17 @@ usally, a json API will return a list of objects.
 `path` should be an array of property names, `RegExp`s, booleans, and/or functions.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
-if `path` is empty or null, or if no matches are made:  
-JSONStream.parse will only one 'data': the root object.
+if `path` is empty or null, JSONStream.parse will only one 'data': the root object.
+
+if `path` was supplied, but there where no matches for some reason (couchdb does this on an error)
+get the root like this:
+
+``` js
+var ps = JSONStream.parse()
+readable.pipe(js).on('end', function () {
+  ps.root //here is the root object.
+})
+```
 
 (this is useful when there is an error, because the error will probably not match your path)
 
