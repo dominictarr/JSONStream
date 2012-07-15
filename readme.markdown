@@ -38,24 +38,14 @@ req.pipe(parser).pipe(logger)
 
 ## JSONStream.parse(path)
 
-usally, a json API will return a list of objects.  
+usally, a json API will return a list of objects.
 
 `path` should be an array of property names, `RegExp`s, booleans, and/or functions.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
 if `path` is empty or null, JSONStream.parse will only one 'data': the root object.
 
-if `path` was supplied, but there where no matches for some reason (couchdb does this on an error)
-get the root like this:
-
-``` js
-var ps = JSONStream.parse()
-readable.pipe(js).on('end', function () {
-  ps.root //here is the root object.
-})
-```
-
-(this is useful when there is an error, because the error will probably not match your path)
+if `path` was supplied, but there where no matches for some reason, the 'root' event will be emitted with the root object. This is for cases where an external API like CouchDB returns an error or differently formatted result instead of the expected result.
 
 ### example
 
@@ -88,29 +78,29 @@ you will get something like this:
 
 ```
 
-we are probably most interested in the `rows.*.docs`  
+we are probably most interested in the `rows.*.docs`
 
 create a `Stream` that parses the documents from the feed like this:
 
 ``` js
 JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
-``` 
+```
 awesome!
 
 ## JSONStream.stringify(open, sep, close)
 
 Create a writable stream.
 
-you may pass in custom `open`, `close`, and `seperator` strings.  
-But, by default, `JSONStream.stringify()` will create an array,  
+you may pass in custom `open`, `close`, and `seperator` strings.
+But, by default, `JSONStream.stringify()` will create an array,
 (with default options `open='[\n', sep='\n,\n', close='\n]\n'`)
 
-If you call `JSONStream.stringify(false)`   
-the elements will only be seperated by a newline.  
+If you call `JSONStream.stringify(false)`
+the elements will only be seperated by a newline.
 
-If you only write one item this will be valid JSON.  
+If you only write one item this will be valid JSON.
 
-If you write many items,  
+If you write many items,
 you can use a `RegExp` to split it into valid chunks.
 
 ## JSONStream.stringifyObject(open, sep, close)
@@ -125,7 +115,7 @@ as the first argument.
 
 ## numbers
 
-There are occasional problems parsing and unparsing very precise numbers.  
+There are occasional problems parsing and unparsing very precise numbers.
 
 I have opened an issue here:
 
@@ -135,8 +125,8 @@ https://github.com/creationix/jsonparse/issues/2
 
 ## Acknowlegements
 
-this module depends on https://github.com/creationix/jsonparse  
-by Tim Caswell  
+this module depends on https://github.com/creationix/jsonparse
+by Tim Caswell
 and also thanks to Florent Jaby for teaching me about parsing with:
 https://github.com/Floby/node-json-streams
 
