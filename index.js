@@ -71,6 +71,8 @@ exports.parse = function (path) {
   stream.end = function (data) {
     if(data)
       stream.write(data)
+    if(!path)
+      stream.emit('data', stream.root)
     stream.emit('root', stream.root, count)
     stream.emit('end')
   }
