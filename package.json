@@ -19,7 +19,7 @@
   },
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
   "scripts": {
-    "test": "for t in test/*.js; do echo *** $t ***; node $t; done"
+    "test": "set -e; for t in test/*.js; do echo '***' $t '***'; node $t; done"
   },
   "optionalDependencies": {},
   "engines": {
