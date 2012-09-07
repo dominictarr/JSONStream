@@ -74,6 +74,11 @@ exports.parse = function (path) {
     stream.emit('root', stream.root, count)
     stream.emit('end')
   }
+
+  stream.destroy = function () {
+    stream.emit('close');
+  }
+
   return stream
 }
 
