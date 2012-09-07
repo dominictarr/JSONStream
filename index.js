@@ -15,7 +15,7 @@ exports.parse = function (path) {
   var stream = new Stream()
   var parser = new Parser()
   var count = 0
-  if(!path.length)
+  if(!path || !path.length)
     path = null
   parser.onValue = function () {
     if(!this.root && this.stack.length == 1){
