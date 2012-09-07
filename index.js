@@ -50,6 +50,17 @@ exports.parse = function (path) {
   stream.emit('data', this.value[this.key])
   }
 
+  parser._onToken = parser.onToken;
+
+  parser.onToken = function (token, value) {
+    parser._onToken(token, value);
+    if (this.stack.length === 0) {
+      if(!path)
+        stream.emit('data', stream.root)
+      stream.emit('root', stream.root, count)
+      count = 0;
+    }
+  }
 
   parser.onError = function (err) {
     stream.emit('error', err)
@@ -71,9 +82,6 @@ exports.parse = function (path) {
   stream.end = function (data) {
     if(data)
       stream.write(data)
-    if(!path)
-      stream.emit('data', stream.root)
-    stream.emit('root', stream.root, count)
     stream.emit('end')
   }
 
