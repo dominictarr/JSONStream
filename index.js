@@ -55,10 +55,13 @@ exports.parse = function (path) {
   parser.onToken = function (token, value) {
     parser._onToken(token, value);
     if (this.stack.length === 0) {
-      if(!path)
-        stream.emit('data', stream.root)
-      stream.emit('root', stream.root, count)
-      count = 0;
+      if (stream.root) {
+        if(!path)
+          stream.emit('data', stream.root)
+        stream.emit('root', stream.root, count)
+        count = 0;
+        stream.root = null;
+      }
     }
   }
 
