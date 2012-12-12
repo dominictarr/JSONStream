@@ -37,10 +37,11 @@ while(l --)
 //console.log('objs', objs)
 
 //return
+var I = 0
 from(function (i, next) {
-    if(i > 1000000) return this.emit('data', ']'), this.emit('end')
+    if(i > 1000) return this.emit('data', ']'), this.emit('end')
     if(!i) this.emit('data', '[\n')
-
+    I = i
     this.emit('data', objs[~~(Math.random()*objs.length)])
     this.emit('data', '\n,\n')
 
@@ -57,9 +58,12 @@ from(function (i, next) {
 
 //  .pipe(fs.createWriteStream('/tmp/test-reverse'))
 //
-probe.on('data', console.log)
 
 setInterval(function () {
-  console.log(process.memoryUsage())
+  var mem = process.memoryUsage()
+  console.log(mem, I)
+  if(mem.heapUsed > 200000000)
+    throw new Error('too much memory used')
+  console.log(mem)
 }, 1e3)
 //*/
