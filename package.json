@@ -8,7 +8,7 @@
     "url": "git://github.com/dominictarr/JSONStream.git"
   },
   "dependencies": {
-    "jsonparse": "0.0.2"
+    "jsonparse": "0.0.4"
   },
   "devDependencies": {
     "it-is": "~1",
