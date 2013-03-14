@@ -48,6 +48,8 @@ exports.parse = function (path) {
 
   count ++
   stream.emit('data', this.value[this.key])
+  for(var i in this.stack)
+    this.stack[i].value = {}
   }
 
   parser._onToken = parser.onToken;
