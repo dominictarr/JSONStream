@@ -6,7 +6,7 @@ streaming JSON.parse and stringify
 
 ## example
 
-```javascript
+``` js
 
 var request = require('request')
   , JSONStream = require('JSONStream')
@@ -18,36 +18,32 @@ var parser = JSONStream.parse(['rows', true])
       console.error(data)
       return data
     })
-```
 
-in node 0.4.x
-
-``` javascript
-
-req.pipe(parser)
-parser.pipe(logger)
-
-```
-
-in node v0.5.x
-
-``` javascript
-req.pipe(parser).pipe(logger)
-
+  request({url: 'http://isaacs.couchone.com/registry/_all_docs'})
+    .pipe(JSONStream.parse('rows.*'))
+    .pipe(es.mapSync(function (data) {
+      console.error(data)
+      return data
+    }))
 ```
 
 ## JSONStream.parse(path)
 
-usally, a json API will return a list of objects.
+parse stream of values that match a path
 
-`path` should be an array of property names, `RegExp`s, booleans, and/or functions.
+``` js
+  JSONStream.parse('rows.*.doc')
+```
+
+If your keys have keys that include `.` or `*` etc, use an array instead.
+`['row', true, /^doc/]`.
+
+If you use an array, `RegExp`s, booleans, and/or functions.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
-a 'root' event is emitted when all data has been received. The 'root' event passes the root object & the count of matched objects.
+If `path` is empty or null, no 'data' events are emitted.
 
-if `path` is empty or null, no 'data' events are emitted.
-
-### example
+### Example
 
 query a couchdb view:
 
