@@ -32,6 +32,11 @@ exports.parse = function (path) {
     stream.queue(null)
   })
 
+  if('string' === typeof path)
+    path = path.split('.').map(function (e) {
+      return e === '*' ? true : e
+    })
+
 
   var count = 0
   if(!path || !path.length)
