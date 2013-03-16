@@ -1,5 +1,6 @@
 var Parser = require('jsonparse')
   , Stream = require('stream').Stream
+  , through = require('through')
 
 /*
 
@@ -12,8 +13,26 @@ var Parser = require('jsonparse')
 
 exports.parse = function (path) {
 
-  var stream = new Stream()
   var parser = new Parser()
+  var stream = through(function (chunk) {
+    if('string' === typeof chunk) {
+      if ('undefined' === typeof Buffer) {
+        var buf = new Array(chunk.length)
+        for (var i = 0; i < chunk.length; i++) buf[i] = chunk.charCodeAt(i)
+        chunk = new Int32Array(buf)
+      } else {
+        chunk = new Buffer(chunk)
+      }
+    }
+    parser.write(chunk)
+  },
+  function (data) {
+    if(data)
+      stream.write(data)
+    stream.queue(null)
+  })
+
+
   var count = 0
   if(!path || !path.length)
     path = null
@@ -47,7 +66,7 @@ exports.parse = function (path) {
       _path.push(c.key)
 
   count ++
-  stream.emit('data', this.value[this.key])
+  stream.queue(this.value[this.key])
   for(var i in this.stack)
     this.stack[i].value = {}
   }
@@ -59,7 +78,7 @@ exports.parse = function (path) {
     if (this.stack.length === 0) {
       if (stream.root) {
         if(!path)
-          stream.emit('data', stream.root)
+          stream.queue(stream.root)
         stream.emit('root', stream.root, count)
         count = 0;
         stream.root = null;
@@ -70,29 +89,7 @@ exports.parse = function (path) {
   parser.onError = function (err) {
     stream.emit('error', err)
   }
-  stream.readable = true
-  stream.writable = true
-  stream.write = function (chunk) {
-    if('string' === typeof chunk) {
-      if ('undefined' === typeof Buffer) {
-        var buf = new Array(chunk.length)
-        for (var i = 0; i < chunk.length; i++) buf[i] = chunk.charCodeAt(i)
-        chunk = new Int32Array(buf)
-      } else {
-        chunk = new Buffer(chunk)
-      }
-    }
-    parser.write(chunk)
-  }
-  stream.end = function (data) {
-    if(data)
-      stream.write(data)
-    stream.emit('end')
-  }
 
-  stream.destroy = function () {
-    stream.emit('close');
-  }
 
   return stream
 }
@@ -124,28 +121,21 @@ exports.stringify = function (op, sep, cl) {
 
   //else, what ever you like
 
-  var stream = new Stream ()
+  var stream
     , first = true
-    , ended = false
     , anyData = false
-  stream.write = function (data) {
+  stream = through(function (data) {
     anyData = true
     var json = JSON.stringify(data)
-    if(first) { first = false ; stream.emit('data', op + json)}
-    else stream.emit('data', sep + json)
-  }
-  stream.end = function (data) {
-    if(ended)
-      return
-    ended = true
-    if(data) stream.write(data)
-    if(!anyData) stream.emit('data', op)
-    stream.emit('data', cl)
-
-    stream.emit('end')
-  }
-  stream.writable = true
-  stream.readable = true
+    if(first) { first = false ; stream.queue(op + json)}
+    else stream.queue(sep + json)
+  },
+  function (data) {
+    if(!anyData)
+      stream.queue(op)
+    stream.queue(cl)
+    stream.queue(null)
+  })
 
   return stream
 }
@@ -167,25 +157,19 @@ exports.stringifyObject = function (op, sep, cl) {
 
   var stream = new Stream ()
     , first = true
-    , ended = false
     , anyData = false
-  stream.write = function (data) {
+  stream = through(function (data) {
     anyData = true
     var json = JSON.stringify(data[0]) + ':' + JSON.stringify(data[1])
-    if(first) { first = false ; stream.emit('data', op + json)}
-    else stream.emit('data', sep + json)
-  }
-  stream.end = function (data) {
-    if(ended) return
-    ended = true
-    if(data) stream.write(data)
-    if(!anyData) stream.emit('data', op)
-    stream.emit('data', cl)
+    if(first) { first = false ; stream.queue(op + json)}
+    else stream.queue(sep + json)
+  }, 
+  function (data) {
+    if(!anyData) stream.queue(op)
+    stream.queue(cl)
 
-    stream.emit('end')
-  }
-  stream.writable = true
-  stream.readable = true
+    stream.queue(null)
+  })
 
   return stream
 }
