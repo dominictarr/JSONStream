@@ -38,9 +38,10 @@ exports.parse = function (path) {
     })
 
 
-  var count = 0
+  var count = 0, _key
   if(!path || !path.length)
     path = null
+
   parser.onValue = function () {
     if(!this.root && this.stack.length == 1){
       stream.root = this.value
@@ -70,12 +71,11 @@ exports.parse = function (path) {
       return
       _path.push(c.key)
 
-  count ++
-  stream.queue(this.value[this.key])
-  for(var i in this.stack)
-    this.stack[i].value = {}
-  }
+    count ++
+    stream.queue(this.value[this.key])
+    delete this.value[this.key]
 
+  }
   parser._onToken = parser.onToken;
 
   parser.onToken = function (token, value) {
