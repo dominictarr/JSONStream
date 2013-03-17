@@ -1,7 +1,7 @@
 var fs = require('fs')
 var JSONStream = require('../')
 var file = '/tmp/JSONStream-test-large.json'
-
+var size = 100000
 if(process.title != 'browser')
 require('tape')('out of mem', function (t) {
 
@@ -65,7 +65,7 @@ var generateTestData = function (cb) {
   });
 
   var i = 0;
-  var max = 100000;
+  var max = size;
   var writing = false
   var split = ',\n';
   var doc = randomJsonDoc();
@@ -75,6 +75,8 @@ var generateTestData = function (cb) {
     if(writing) return
     writing = true
     while(++i < max) {
+      if(Math.random() < 0.001)
+        console.log('generate..', i + ' / ' + size)
       if(!stream.write(doc + split)) {
         writing = false
         return stream.once('drain', write)
@@ -109,7 +111,7 @@ var testJSONStreamParse_causesOutOfMem = function (done) {
   });
 
   stream.on('end', function () {
-    t.equal(items, 100000)
+    t.equal(items, size)
     t.end()
   });
 
@@ -121,7 +123,7 @@ var testJSONStreamParse_causesOutOfMem = function (done) {
 
 fs.stat(file, function (err, stat) {
   console.log(stat)
-  if(err || stat.size !== 86000000)
+  if(err)
     generateTestData(testJSONStreamParse_causesOutOfMem);
   else 
     testJSONStreamParse_causesOutOfMem()
