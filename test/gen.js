@@ -1,7 +1,7 @@
 var fs = require('fs')
 var JSONStream = require('../')
-var file = '/tmp/JSONStream-test-large.json'
-var size = 100000
+var file = process.argv[2] || '/tmp/JSONStream-test-large.json'
+var size = Number(process.argv[3] || 100000)
 if(process.title != 'browser')
 require('tape')('out of mem', function (t) {
 
