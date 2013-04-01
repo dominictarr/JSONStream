@@ -16,7 +16,7 @@ exports.parse = function (path) {
   var parser = new Parser()
   var stream = through(function (chunk) {
     if('string' === typeof chunk) {
-      if ('undefined' === typeof Buffer) {
+      if (process.browser) {
         var buf = new Array(chunk.length)
         for (var i = 0; i < chunk.length; i++) buf[i] = chunk.charCodeAt(i)
         chunk = new Int32Array(buf)
