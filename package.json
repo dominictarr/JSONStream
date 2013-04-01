@@ -16,7 +16,8 @@
     "assertions": "~2.2.2",
     "render": "~0.1.1",
     "trees": "~0.0.3",
-    "event-stream": "~0.7.0"
+    "event-stream": "~0.7.0",
+    "tape": "~0.2.2"
   },
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
   "scripts": {
