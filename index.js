@@ -43,38 +43,40 @@ exports.parse = function (path) {
     path = null
 
   parser.onValue = function () {
-    if(!this.root && this.stack.length == 1){
+    if (!this.root && this.stack.length == 1)
       stream.root = this.value
-      }
-    if(!path || this.stack.length !== path.length)
-      return
-    var _path = []
-    for( var i = 0; i < (path.length - 1); i++) {
+
+    if(! path) return
+
+    var i = 0 // iterates on path
+    var j  = 0 // iterates on stack
+    while (i < path.length) {
       var key = path[i]
-      var c = this.stack[1 + (+i)]
+      var c
+      j++
 
-      if(!c) {
-        return
+      if (key !== '') {
+        c = (j === this.stack.length) ? this : this.stack[j]
+        if (!c) return
+        if (! check(key, c.key)) return
+        i++
+      } else {
+        i++
+        var nextKey = path[i]
+        if (! nextKey) return
+        while (true) {
+          c = (j === this.stack.length) ? this : this.stack[j]
+          if (!c) return
+          if (check(nextKey, c.key)) { i++; break}
+          j++
+        }
       }
-      var m = check(key, c.key)
-      _path.push(c.key)
-
-       if(!m)
-        return
-
     }
-    var c = this
-
-    var key = path[path.length - 1]
-      var m = check(key, c.key)
-     if(!m)
-      return
-      _path.push(c.key)
+    if (j !== this.stack.length) return
 
     count ++
     stream.queue(this.value[this.key])
     delete this.value[this.key]
-
   }
   parser._onToken = parser.onToken;
 
