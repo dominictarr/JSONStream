@@ -5,7 +5,7 @@
    , it = require('it-is')
 
  var expected = JSON.parse(fs.readFileSync(file))
-   , parser = JSONStream.parse('docs..value')
+   , parser = JSONStream.parse(['docs', {recurse: true}, 'value'])
    , called = 0
    , ended = false
    , parsed = []

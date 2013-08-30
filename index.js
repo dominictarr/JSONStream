@@ -34,7 +34,12 @@ exports.parse = function (path) {
 
   if('string' === typeof path)
     path = path.split('.').map(function (e) {
-      return e === '*' ? true : e
+      if (e === '*')
+        return true
+      else if (e === '') // '..'.split('.') returns an empty string
+        return {recurse: true}
+      else
+        return e
     })
 
 
@@ -55,7 +60,7 @@ exports.parse = function (path) {
       var c
       j++
 
-      if (key !== '') {
+      if (key && !key.recurse) {
         c = (j === this.stack.length) ? this : this.stack[j]
         if (!c) return
         if (! check(key, c.key)) return

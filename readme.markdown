@@ -35,15 +35,17 @@ parse stream of values that match a path
   JSONStream.parse('rows.*.doc')
 ```
 
+The `..` operator is the recursive descent operator from [JSONPath](http://goessner.net/articles/JsonPath/), which will match a child at any depth (see examples below).
+
 If your keys have keys that include `.` or `*` etc, use an array instead.
 `['row', true, /^doc/]`.
 
-If you use an array, `RegExp`s, booleans, and/or functions.
+If you use an array, `RegExp`s, booleans, and/or functions. The `..` operator is also available in array representation, using `{recurse: true}`.
 any object that matches the path will be emitted as 'data' (and `pipe`d down stream)
 
 If `path` is empty or null, no 'data' events are emitted.
 
-### Example
+### Examples
 
 query a couchdb view:
 
@@ -92,6 +94,26 @@ stream.on('root', function(root, count) {
 });
 ```
 awesome!
+
+
+`JSONStream.parser('docs..value')` (or `JSONStream.parser('docs', {recurse: true}, 'value')` using an array) will emit every `value` object that is a child, grand-child, etc. of the `docs` object. In this example, it will match exactly 5 times at various depth levels, emitting 0, 1, 2, 3 and 4 as results.
+```js
+{
+  "total": 5,
+  "docs": [
+    {
+      "key": {
+        "value": 0,
+        "some": "property"
+      }
+    },
+    {"value": 1},
+    {"value": 2},
+    {"blbl": [{}, {"a":0, "b":1, "value":3}, 10]},
+    {"value": 4}
+  ]
+}
+```
 
 ## JSONStream.stringify(open, sep, close)
 
