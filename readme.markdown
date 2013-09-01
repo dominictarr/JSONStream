@@ -96,7 +96,12 @@ stream.on('root', function(root, count) {
 awesome!
 
 
-`JSONStream.parser('docs..value')` (or `JSONStream.parser('docs', {recurse: true}, 'value')` using an array) will emit every `value` object that is a child, grand-child, etc. of the `docs` object. In this example, it will match exactly 5 times at various depth levels, emitting 0, 1, 2, 3 and 4 as results.
+`JSONStream.parser('docs..value')` 
+(or `JSONStream.parser(['docs', {recurse: true}, 'value'])` using an array)
+will emit every `value` object that is a child, grand-child, etc. of the 
+`docs` object. In this example, it will match exactly 5 times at various depth
+levels, emitting 0, 1, 2, 3 and 4 as results.
+
 ```js
 {
   "total": 5,
