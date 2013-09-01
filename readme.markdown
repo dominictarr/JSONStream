@@ -95,6 +95,7 @@ stream.on('root', function(root, count) {
 ```
 awesome!
 
+### recursive patterns (..)
 
 `JSONStream.parser('docs..value')` 
 (or `JSONStream.parser(['docs', {recurse: true}, 'value'])` using an array)
