@@ -7,6 +7,14 @@
     "type": "git",
     "url": "git://github.com/dominictarr/JSONStream.git"
   },
+  "keywords": [
+    "json",
+    "stream",
+    "streaming",
+    "parser",
+    "async",
+    "parsing"
+  ],
   "dependencies": {
     "jsonparse": "0.0.5",
     "through": "~2.2.7"
