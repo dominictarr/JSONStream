@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "jsonparse": "0.0.5",
-    "through": "~2.2.7"
+    "through": ">=2.2.7 <3"
   },
   "devDependencies": {
     "it-is": "~1",
