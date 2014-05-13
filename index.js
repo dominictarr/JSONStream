@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 var Parser = require('jsonparse')
   , Stream = require('stream').Stream
   , through = require('through')
@@ -11,7 +13,7 @@ var Parser = require('jsonparse')
 
 */
 
-exports.parse = function (path) {
+exports.parse = function (path, map) {
 
   var parser = new Parser()
   var stream = through(function (chunk) {
@@ -80,8 +82,9 @@ exports.parse = function (path) {
     if (j !== this.stack.length) return
 
     count ++
-    if(null != this.value[this.key])
-      stream.queue(this.value[this.key])
+    var data = this.value[this.key]
+    if(null != data)
+      stream.queue(map ? map(data) : data)
     delete this.value[this.key]
   }
   parser._onToken = parser.onToken;
@@ -185,4 +188,11 @@ exports.stringifyObject = function (op, sep, cl) {
   })
 
   return stream
+}
+
+if(!module.parent && process.title !== 'browser') {
+  process.stdin
+    .pipe(exports.parse(process.argv[2]))
+    .pipe(exports.stringify())
+    .pipe(process.stdout)
 }
