@@ -84,7 +84,8 @@ exports.parse = function (path, map) {
     count ++
     var data = this.value[this.key]
     if(null != data)
-      stream.queue(map ? map(data) : data)
+      if(null != (data = map ? map(data) : data))
+        stream.queue(data)
     delete this.value[this.key]
   }
   parser._onToken = parser.onToken;
