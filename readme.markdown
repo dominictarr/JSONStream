@@ -114,6 +114,14 @@ levels, emitting 0, 1, 2, 3 and 4 as results.
 }
 ```
 
+## JSONStream.parse(pattern, map)
+
+provide a function that can be used to map or filter
+the json output. `map` is passed the value at that node of the pattern,
+if `map` return non-nullish (anything but `null` or `undefined`)
+that value will be emitted in the stream. If it returns a nullish value,
+nothing will be emitted.
+
 ## JSONStream.stringify(open, sep, close)
 
 Create a writable stream.
@@ -139,6 +147,14 @@ Accordingly, `open='{\n', sep='\n,\n', close='\n}\n'`.
 
 When you `.write()` to the stream you must supply an array with `[ key, data ]`
 as the first argument.
+
+## unix tool
+
+query npm to see all the modules that browserify has ever depended on.
+
+``` bash
+curl https://registry.npmjs.org/browserify | JSONStream 'versions.*.dependencies'
+```
 
 ## numbers
 
