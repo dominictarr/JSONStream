@@ -80,7 +80,8 @@ exports.parse = function (path) {
     if (j !== this.stack.length) return
 
     count ++
-    stream.queue(this.value[this.key])
+    if(null != this.value[this.key])
+      stream.queue(this.value[this.key])
     delete this.value[this.key]
   }
   parser._onToken = parser.onToken;
