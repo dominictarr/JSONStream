@@ -123,7 +123,8 @@ function check (x, y) {
   return false
 }
 
-exports.stringify = function (op, sep, cl) {
+exports.stringify = function (op, sep, cl, indent) {
+  indent = indent || 0
   if (op === false){
     op = ''
     sep = '\n'
@@ -143,7 +144,7 @@ exports.stringify = function (op, sep, cl) {
     , anyData = false
   stream = through(function (data) {
     anyData = true
-    var json = JSON.stringify(data)
+    var json = JSON.stringify(data, null, indent)
     if(first) { first = false ; stream.queue(op + json)}
     else stream.queue(sep + json)
   },
@@ -157,7 +158,8 @@ exports.stringify = function (op, sep, cl) {
   return stream
 }
 
-exports.stringifyObject = function (op, sep, cl) {
+exports.stringifyObject = function (op, sep, cl, indent) {
+  indent = indent || 0
   if (op === false){
     op = ''
     sep = '\n'
@@ -177,10 +179,10 @@ exports.stringifyObject = function (op, sep, cl) {
     , anyData = false
   stream = through(function (data) {
     anyData = true
-    var json = JSON.stringify(data[0]) + ':' + JSON.stringify(data[1])
+    var json = JSON.stringify(data[0]) + ':' + JSON.stringify(data[1], null, indent)
     if(first) { first = false ; stream.queue(op + json)}
     else stream.queue(sep + json)
-  }, 
+  },
   function (data) {
     if(!anyData) stream.queue(op)
     stream.queue(cl)
@@ -194,6 +196,6 @@ exports.stringifyObject = function (op, sep, cl) {
 if(!module.parent && process.title !== 'browser') {
   process.stdin
     .pipe(exports.parse(process.argv[2]))
-    .pipe(exports.stringify())
+    .pipe(exports.stringify('[', ',\n', ']\n', 2))
     .pipe(process.stdout)
 }
