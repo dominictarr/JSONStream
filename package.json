@@ -25,7 +25,7 @@
     "render": "~0.1.1",
     "trees": "~0.0.3",
     "event-stream": "~0.7.0",
-    "tape": "~0.3.3"
+    "tape": "~2.12.3"
   },
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
   "scripts": {
