@@ -82,9 +82,10 @@ exports.parse = function (path, map) {
     if (j !== this.stack.length) return
 
     count ++
+    var actualPath = this.stack.slice(1).map(function(element) { return element.key }).concat([this.key])
     var data = this.value[this.key]
     if(null != data)
-      if(null != (data = map ? map(data) : data))
+      if(null != (data = map ? map(data, actualPath) : data))
         stream.queue(data)
     delete this.value[this.key]
   }
