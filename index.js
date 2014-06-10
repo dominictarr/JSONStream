@@ -17,15 +17,8 @@ exports.parse = function (path, map) {
 
   var parser = new Parser()
   var stream = through(function (chunk) {
-    if('string' === typeof chunk) {
-      if (process.browser) {
-        var buf = new Array(chunk.length)
-        for (var i = 0; i < chunk.length; i++) buf[i] = chunk.charCodeAt(i)
-        chunk = new Int32Array(buf)
-      } else {
-        chunk = new Buffer(chunk)
-      }
-    }
+    if('string' === typeof chunk)
+      chunk = new Buffer(chunk)
     parser.write(chunk)
   },
   function (data) {
