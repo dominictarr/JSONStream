@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 var Parser = require('jsonparse')
-  , Stream = require('stream').Stream
   , through = require('through')
 
 /*
@@ -167,20 +166,19 @@ exports.stringifyObject = function (op, sep, cl, indent) {
 
   //else, what ever you like
 
-  var stream = new Stream ()
-    , first = true
+  var first = true
     , anyData = false
   stream = through(function (data) {
     anyData = true
     var json = JSON.stringify(data[0]) + ':' + JSON.stringify(data[1], null, indent)
-    if(first) { first = false ; stream.queue(op + json)}
-    else stream.queue(sep + json)
+    if(first) { first = false ; this.queue(op + json)}
+    else this.queue(sep + json)
   },
   function (data) {
-    if(!anyData) stream.queue(op)
-    stream.queue(cl)
+    if(!anyData) this.queue(op)
+    this.queue(cl)
 
-    stream.queue(null)
+    this.queue(null)
   })
 
   return stream
