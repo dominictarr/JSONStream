@@ -1,6 +1,6 @@
 {
   "name": "JSONStream",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "description": "rawStream.pipe(JSONStream.parse()).pipe(streamOfObjects)",
   "homepage": "http://github.com/dominictarr/JSONStream",
   "repository": {
