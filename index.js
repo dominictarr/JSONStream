@@ -41,9 +41,9 @@ exports.parse = function (path, map) {
   if(!path || !path.length)
     path = null
 
-  parser.onValue = function () {
-    if (!this.root && this.stack.length == 1)
-      stream.root = this.value
+  parser.onValue = function (value) {
+    if (!this.root)
+      stream.root = value
 
     if(! path) return
 
