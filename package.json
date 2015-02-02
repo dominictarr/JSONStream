@@ -16,7 +16,7 @@
     "parsing"
   ],
   "dependencies": {
-    "jsonparse": "0.0.5",
+    "jsonparse": "~1.0.0",
     "through": ">=2.2.7 <3"
   },
   "devDependencies": {
