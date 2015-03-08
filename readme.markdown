@@ -90,8 +90,8 @@ awesome!
 
 ### recursive patterns (..)
 
-`JSONStream.parser('docs..value')` 
-(or `JSONStream.parser(['docs', {recurse: true}, 'value'])` using an array)
+`JSONStream.parse('docs..value')` 
+(or `JSONStream.parse(['docs', {recurse: true}, 'value'])` using an array)
 will emit every `value` object that is a child, grand-child, etc. of the 
 `docs` object. In this example, it will match exactly 5 times at various depth
 levels, emitting 0, 1, 2, 3 and 4 as results.
