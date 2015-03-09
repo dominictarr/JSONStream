@@ -96,7 +96,6 @@ exports.parse = function (path, map) {
       if (stream.root) {
         if(!path)
           stream.queue(stream.root)
-        stream.emit('root', stream.root, count)
         count = 0;
         stream.root = null;
       }

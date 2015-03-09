@@ -79,12 +79,6 @@ var stream = JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
 stream.on('data', function(data) {
   console.log('received:', data);
 });
-
-stream.on('root', function(root, count) {
-  if (!count) {
-    console.log('no matches found:', root);
-  }
-});
 ```
 awesome!
 

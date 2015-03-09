@@ -8,14 +8,8 @@ var JSONStream = require('../');
 var str = fs.readFileSync(file);
 
 var server = net.createServer(function(client) {
-    var root_calls = 0;
     var data_calls = 0;
     var parser = JSONStream.parse();
-    parser.on('root', function(root, count) {
-        ++ root_calls;
-        it(root_calls).notEqual(2);
-    });
-
     parser.on('error', function(err) {
         console.log(err);
         server.close();
