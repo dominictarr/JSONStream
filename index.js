@@ -66,10 +66,15 @@ exports.parse = function (path, map) {
         while (true) {
           c = (j === this.stack.length) ? this : this.stack[j]
           if (!c) return
-          if (check(nextKey, c.key)) { i++; break}
+          if (check(nextKey, c.key)) {
+            i++;
+            this.stack[j].value = null
+            break
+          }
           j++
         }
       }
+
     }
     if (j !== this.stack.length) return
 
@@ -80,6 +85,8 @@ exports.parse = function (path, map) {
       if(null != (data = map ? map(data, actualPath) : data))
         stream.queue(data)
     delete this.value[this.key]
+    for(var k in this.stack)
+      this.stack[k].value = null
   }
   parser._onToken = parser.onToken;
 
