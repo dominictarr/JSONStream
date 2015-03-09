@@ -10,13 +10,8 @@ var str = fs.readFileSync(file);
 var datas = {}
 
 var server = net.createServer(function(client) {
-    var root_calls = 0;
     var data_calls = 0;
     var parser = JSONStream.parse(['rows', true, 'key']);
-    parser.on('root', function(root, count) {
-        ++ root_calls;
-    });
-
     parser.on('data', function(data) {
         ++ data_calls;
         datas[data] = (datas[data] || 0) + 1
@@ -26,9 +21,8 @@ var server = net.createServer(function(client) {
     parser.on('end', function() {
         console.log('END')
         var min = Infinity
-        for (var d in datas) 
+        for (var d in datas)
           min = min > datas[d] ? datas[d] : min
-        it(root_calls).equal(3);
         it(min).equal(3);
         server.close();
     });
