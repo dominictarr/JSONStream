@@ -69,7 +69,7 @@ you will get something like this:
 
 ```
 
-we are probably most interested in the `rows.*.docs`
+we are probably most interested in the `rows.*.doc`
 
 create a `Stream` that parses the documents from the feed like this:
 
