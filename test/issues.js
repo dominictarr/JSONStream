@@ -2,13 +2,15 @@ var JSONStream = require('../');
 var test = require('tape')
 
 test('#66', function (t) {
-
-    var stream = JSONStream
+  var passed = false;
+   var stream = JSONStream
     .parse()
     .on('error', function (err) {
-        t.ifError(err);
+        t.ok(err);
+        passed = true;
     })
     .on('end', function () {
+        t.ok(passed);
         t.end();
     });
 

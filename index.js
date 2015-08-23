@@ -20,7 +20,9 @@ exports.parse = function (path, map) {
       chunk = new Buffer(chunk)
     try {
       parser.write(chunk);
-    } catch(e)  {
+    } catch(e) {
+      stream.emit('error', e);
+      stream.destroy();
     }
   },
   function (data) {
@@ -111,11 +113,6 @@ exports.parse = function (path, map) {
     stream.emit('error', err)
   }
   
-  parser.parseError = function(token, value) {
-      this.onError(new Error("Unexpected value " (value ? ("(" + JSON.stringify(value) + ")") : "")));
-  }
-
-
   return stream
 }
 
