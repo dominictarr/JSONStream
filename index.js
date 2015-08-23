@@ -22,7 +22,6 @@ exports.parse = function (path, map) {
       parser.write(chunk);
     } catch(e) {
       stream.emit('error', e);
-      stream.destroy();
     }
   },
   function (data) {
