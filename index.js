@@ -18,11 +18,7 @@ exports.parse = function (path, map) {
   var stream = through(function (chunk) {
     if('string' === typeof chunk)
       chunk = new Buffer(chunk)
-    try {
       parser.write(chunk);
-    } catch(e) {
-      stream.emit('error', e);
-    }
   },
   function (data) {
     if(data)
@@ -109,7 +105,7 @@ exports.parse = function (path, map) {
   parser.onError = function (err) {
     if(err.message.indexOf("at position") > -1)
       err.message = "Invalid JSON (" + err.message + ")";
-    stream.emit('error', err)
+      stream.emit('error', err)
   }
   
   return stream
