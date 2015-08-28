@@ -169,4 +169,4 @@ https://github.com/Floby/node-json-streams
 
 ## license
 
-MIT / APACHE2
+Dual-licensed under the MIT License or the Apache License, version 2.0
