@@ -18,7 +18,7 @@ exports.parse = function (path, map) {
   var stream = through(function (chunk) {
     if('string' === typeof chunk)
       chunk = new Buffer(chunk)
-      parser.write(chunk);
+    parser.write(chunk);
   },
   function (data) {
     if(data)
