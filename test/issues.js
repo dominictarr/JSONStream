@@ -10,7 +10,7 @@ test('#66', function (t) {
         error++;
     })
     .on('end', function () {
-        t.ok(error > 0);
+        t.ok(error === 1);
         t.end();
     });
 
