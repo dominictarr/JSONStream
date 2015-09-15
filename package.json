@@ -17,7 +17,7 @@
     "parsing"
   ],
   "dependencies": {
-    "jsonparse": "git://github.com/gchauvet/jsonparse.git",
+    "jsonparse": "1.1.x",
     "through": ">=2.2.7 <3"
   },
   "devDependencies": {
