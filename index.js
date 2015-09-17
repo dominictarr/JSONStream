@@ -101,7 +101,7 @@ exports.parse = function (path, map) {
       }
     }
   }
-
+  
   parser.onError = function (err) {
     if(err.message.indexOf("at position") > -1)
       err.message = "Invalid JSON (" + err.message + ")";
