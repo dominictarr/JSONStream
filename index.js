@@ -175,7 +175,8 @@ exports.stringifyObject = function (op, sep, cl, indent) {
 
   //else, what ever you like
 
-  var first = true
+  var stream
+    , first = true
     , anyData = false
   stream = through(function (data) {
     anyData = true
