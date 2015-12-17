@@ -38,6 +38,8 @@ any object that matches the path will be emitted as 'data' (and `pipe`d down str
 
 If `path` is empty or null, no 'data' events are emitted.
 
+If you want to have keys emitted, you can prefix your `*` operator with `$`: `obj.$*` - in this case the data passed to the stream is an object with a `key` holding the key and a `value` property holding the data.
+
 ### Examples
 
 query a couchdb view:
@@ -81,6 +83,17 @@ stream.on('data', function(data) {
 });
 ```
 awesome!
+
+In case you wanted the contents the doc emitted:
+
+``` js
+var stream = JSONStream.parse(['rows', true, 'doc', {emitKey: true}]) //rows, ANYTHING, doc, items in docs with keys
+
+stream.on('data', function(data) {
+  console.log('key:', data.key);
+  console.log('value:', data.value);
+});
+```
 
 ### recursive patterns (..)
 

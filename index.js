@@ -30,7 +30,9 @@ exports.parse = function (path, map) {
 
   if('string' === typeof path)
     path = path.split('.').map(function (e) {
-      if (e === '*')
+      if (e === '$*')
+        return {emitKey: true}
+      else if (e === '*')
         return true
       else if (e === '') // '..'.split('.') returns an empty string
         return {recurse: true}
@@ -51,6 +53,7 @@ exports.parse = function (path, map) {
 
     var i = 0 // iterates on path
     var j  = 0 // iterates on stack
+    var emitKey = false;
     while (i < path.length) {
       var key = path[i]
       var c
@@ -60,6 +63,7 @@ exports.parse = function (path, map) {
         c = (j === this.stack.length) ? this : this.stack[j]
         if (!c) return
         if (! check(key, c.key)) return
+        emitKey = !!key.emitKey;
         i++
       } else {
         i++
@@ -84,8 +88,10 @@ exports.parse = function (path, map) {
     var actualPath = this.stack.slice(1).map(function(element) { return element.key }).concat([this.key])
     var data = this.value[this.key]
     if(null != data)
-      if(null != (data = map ? map(data, actualPath) : data))
+      if(null != (data = map ? map(data, actualPath) : data)) {
+        data = emitKey ? { value: data, key: this.key } : data;
         stream.queue(data)
+      }
     delete this.value[this.key]
     for(var k in this.stack)
       this.stack[k].value = null
@@ -119,7 +125,7 @@ function check (x, y) {
     return y == x
   else if (x && 'function' === typeof x.exec)
     return x.exec(y)
-  else if ('boolean' === typeof x)
+  else if ('boolean' === typeof x || 'object' === typeof x)
     return x
   else if ('function' === typeof x)
     return x(y)
