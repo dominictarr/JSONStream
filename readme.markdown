@@ -4,6 +4,9 @@ streaming JSON.parse and stringify
 
 ![](https://secure.travis-ci.org/dominictarr/JSONStream.png?branch=master)
 
+## install
+```npm install JSONStream```
+
 ## example
 
 ``` js
