@@ -74,7 +74,7 @@ exports.parse = function (path, map) {
           if (!c) return
           if (check(nextKey, c.key)) {
             i++;
-            if (this.stack[j])
+            if (!Object.isFrozen(this.stack[j]))
               this.stack[j].value = null
             break
           }
@@ -95,7 +95,7 @@ exports.parse = function (path, map) {
       }
     delete this.value[this.key]
     for(var k in this.stack)
-      if (this.stack[k])
+      if (!Object.isFrozen(this.stack[k]))
         this.stack[k].value = null
   }
   parser._onToken = parser.onToken;
