@@ -18,3 +18,17 @@ test('#66', function (t) {
     stream.end();
 
 });
+
+test('#81 - failure to parse nested objects', function (t) {
+  var stream = JSONStream
+    .parse('.bar.foo')
+    .on('error', function (err) {
+      t.error(err);
+    })
+    .on('end', function () {
+      t.end();
+    });
+
+  stream.write('{"bar":{"foo":"baz"}}');
+  stream.end();
+});
