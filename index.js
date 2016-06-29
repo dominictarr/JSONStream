@@ -111,7 +111,7 @@ exports.parse = function (path, map) {
       }
     }
   }
-  
+
   parser.onError = function (err) {
     if(err.message.indexOf("at position") > -1)
       err.message = "Invalid JSON (" + err.message + ")";
@@ -155,7 +155,12 @@ exports.stringify = function (op, sep, cl, indent) {
     , anyData = false
   stream = through(function (data) {
     anyData = true
-    var json = JSON.stringify(data, null, indent)
+    try {
+      var json = JSON.stringify(data, null, indent)
+    } catch (err) {
+      stream.emit('error', err)
+      return stream.end()
+    }
     if(first) { first = false ; stream.queue(op + json)}
     else stream.queue(sep + json)
   },
