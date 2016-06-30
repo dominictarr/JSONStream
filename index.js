@@ -158,8 +158,7 @@ exports.stringify = function (op, sep, cl, indent) {
     try {
       var json = JSON.stringify(data, null, indent)
     } catch (err) {
-      stream.emit('error', err)
-      return stream.end()
+      return stream.emit('error', err)
     }
     if(first) { first = false ; stream.queue(op + json)}
     else stream.queue(sep + json)
@@ -214,3 +213,4 @@ if(!module.parent && process.title !== 'browser') {
     .pipe(exports.stringify('[', ',\n', ']\n', 2))
     .pipe(process.stdout)
 }
+
