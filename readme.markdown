@@ -168,13 +168,9 @@ curl https://registry.npmjs.org/browserify | JSONStream 'versions.*.dependencies
 
 ## numbers
 
-There are occasional problems parsing and unparsing very precise numbers.
-
-I have opened an issue here:
-
-https://github.com/creationix/jsonparse/issues/2
-
-+1
+numbers will be emitted as numbers.
+huge numbers that cannot be represented in memory as javascript numbers will be emitted as strings.
+cf https://github.com/creationix/jsonparse/commit/044b268f01c4b8f97fb936fc85d3bcfba179e5bb for details.
 
 ## Acknowlegements
 
