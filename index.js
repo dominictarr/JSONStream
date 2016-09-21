@@ -25,6 +25,8 @@ exports.parse = function (path, map) {
   function (data) {
     if(data)
       stream.write(data)
+    if (header)
+        stream.emit('header', header)
     if (footer)
       stream.emit('footer', footer)
     stream.queue(null)
