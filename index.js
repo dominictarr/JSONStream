@@ -15,7 +15,7 @@ var Parser = require('jsonparse')
 */
 
 exports.parse = function (path, map) {
-
+  var header, footer
   var parser = new Parser()
   var stream = through(function (chunk) {
     if('string' === typeof chunk)
@@ -25,6 +25,8 @@ exports.parse = function (path, map) {
   function (data) {
     if(data)
       stream.write(data)
+    if (footer)
+      stream.emit('footer', footer)
     stream.queue(null)
   })
 
@@ -62,7 +64,10 @@ exports.parse = function (path, map) {
       if (key && !key.recurse) {
         c = (j === this.stack.length) ? this : this.stack[j]
         if (!c) return
-        if (! check(key, c.key)) return
+        if (! check(key, c.key)) {
+          setHeaderFooter(c.key, value)
+          return
+        }
         emitKey = !!key.emitKey;
         i++
       } else {
@@ -77,6 +82,8 @@ exports.parse = function (path, map) {
             if (!Object.isFrozen(this.stack[j]))
               this.stack[j].value = null
             break
+          } else {
+            setHeaderFooter(c.key, value)
           }
           j++
         }
@@ -97,6 +104,12 @@ exports.parse = function (path, map) {
     for(var k in this.stack)
       if (!Object.isFrozen(this.stack[k]))
         this.stack[k].value = null
+
+    // emit header
+    if (header) {
+      stream.emit('header', header);
+      header = false;
+    }
   }
   parser._onToken = parser.onToken;
 
@@ -118,8 +131,21 @@ exports.parse = function (path, map) {
     stream.emit('error', err)
   }
 
-
   return stream
+
+  function setHeaderFooter(key, value) {
+    // header has not been emitted yet
+    if (header !== false) {
+      header = header || {}
+      header[key] = value
+    }
+
+    // footer has not been emitted yet but header has
+    if (footer !== false && header === false) {
+      footer = footer || {}
+      footer[key] = value
+    }
+  }
 }
 
 function check (x, y) {
