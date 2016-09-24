@@ -84,6 +84,11 @@ var stream = JSONStream.parse(['rows', true, 'doc']) //rows, ANYTHING, doc
 stream.on('data', function(data) {
   console.log('received:', data);
 });
+//emits anything from _before_ the first match
+stream.on('header', function (data) {
+  console.log('header:', data) // => {"total_rows":129,"offset":0}
+})
+
 ```
 awesome!
 
@@ -96,6 +101,7 @@ stream.on('data', function(data) {
   console.log('key:', data.key);
   console.log('value:', data.value);
 });
+
 ```
 
 ### recursive patterns (..)
@@ -131,6 +137,10 @@ the json output. `map` is passed the value at that node of the pattern,
 if `map` return non-nullish (anything but `null` or `undefined`)
 that value will be emitted in the stream. If it returns a nullish value,
 nothing will be emitted.
+
+`JSONStream` also emits `'header'` and `'footer'` events,
+the `'header'` event contains anything in the output that was before
+the first match, and the `'footer'`, is anything after the last match.
 
 ## JSONStream.stringify(open, sep, close)
 
@@ -182,3 +192,4 @@ https://github.com/Floby/node-json-streams
 ## license
 
 Dual-licensed under the MIT License or the Apache License, version 2.0
+
