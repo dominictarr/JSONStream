@@ -28,7 +28,7 @@
     "event-stream": "~0.7.0",
     "tape": "~2.12.3"
   },
-  "bin": "./index.js",
+  "bin": "./bin.js",
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
   "scripts": {
     "test": "set -e; for t in test/*.js; do echo '***' $t '***'; node $t; done"
