@@ -31,7 +31,7 @@
   "bin": "./bin.js",
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)",
   "scripts": {
-    "test": "set -e; for t in test/*.js; do echo '***' $t '***'; node $t; done"
+    "test": "node test/run.js"
   },
   "optionalDependencies": {},
   "engines": {
